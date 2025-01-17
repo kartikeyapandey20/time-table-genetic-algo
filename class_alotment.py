@@ -94,8 +94,17 @@ class ClassroomSchedulerGA:
             population = sorted(population, key=lambda x: self.fitness(x), reverse=True)
             best_fitness = self.fitness(population[0])
 
+            # Define the ideal fitness (assume 0 means no penalties)
+            ideal_fitness = 0
+
+            # Calculate quality percentage
+            if best_fitness >= 0:  # When fitness is positive or zero
+                quality_percentage = 100
+            else:
+                quality_percentage = (1 - abs(best_fitness) / abs(ideal_fitness + 1e-6)) * 100  # Avoid divide-by-zero
+
             # Logging
-            print(f"Generation {generation}, Best Fitness: {best_fitness}")
+            print(f"Generation {generation}, Best Fitness: {best_fitness}, Quality: {quality_percentage:.2f}%")
 
             # Check for optimal solution
             if best_fitness >= 0:
